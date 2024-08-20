@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electricity Bill Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 8px;
+        }
+
+        button {
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Electricity Bill & Unit Calculator</h1>
+
+    <div class="form-group">
+        <label for="previousReading">Previous Reading:</label>
+        <input type="number" id="previousReading" placeholder="Enter previous reading">
+    </div>
+
+    <div class="form-group">
+        <label for="currentReading">Current Reading:</label>
+        <input type="number" id="currentReading" placeholder="Enter current reading">
+    </div>
+
+    <div class="form-group">
+        <label for="billCategory">Bill Category:</label>
+        <select id="billCategory">
+            <option value="protected">Protected</option>
+            <option value="unprotected_new">Unprotected - Uniform Tariff (New)</option>
+            <option value="unprotected_old">Unprotected - Uniform Tariff (Old)</option>
+        </select>
+    </div>
+
+    <button onclick="calculateBill()">Calculate Bill</button>
+
+    <div class="result" id="result">
+        <!-- Result will be displayed here -->
+    </div>
+
+    <script>
+        function calculateBill() {
+            const previousReading = parseFloat(document.getElementById('previousReading').value);
+            const currentReading = parseFloat(document.getElementById('currentReading').value);
+            const billCategory = document.getElementById('billCategory').value;
+
+            if (isNaN(previousReading) || isNaN(currentReading) || previousReading >= currentReading) {
+                alert("Please enter valid readings.");
+                return;
+            }
+
+            const unitsConsumed = currentReading - previousReading;
+            let billAmount = 0;
+
+            if (billCategory === "protected") {
+                if (unitsConsumed <= 50) {
+                    billAmount = unitsConsumed * 3.95;
+                } else if (unitsConsumed <= 100) {
+                    billAmount = unitsConsumed * 7.74;
+                } else if (unitsConsumed <= 200) {
+                    billAmount = 100 * 7.74 + (unitsConsumed - 100) * 10.06;
+                } else {
+                    alert("Your meter reading exceeds 200 units. Please change to unprotected.");
+                    // Calculate the bill as if it were unprotected, if they don't change the category.
+                    billAmount = 100 * 7.74 + 100 * 10.06 + (unitsConsumed - 200) * 10.06;  // Continue applying the highest protected rate
+                }
+            } else if (billCategory === "unprotected_new") {
+                if (unitsConsumed <= 100) {
+                    billAmount = unitsConsumed * 16.48;
+                } else if (unitsConsumed <= 200) {
+                    billAmount = 100 * 16.48 + (unitsConsumed - 100) * 22.95;
+                } else if (unitsConsumed <= 300) {
+                    billAmount = 100 * 16.48 + 100 * 22.95 + (unitsConsumed - 200) * 27.14;
+                } else if (unitsConsumed <= 400) {
+                    billAmount = 100 * 16.48 + 100 * 22.95 + 100 * 27.14 + (unitsConsumed - 300) * 32.03;
+                } else if (unitsConsumed <= 500) {
+                    billAmount = 100 * 16.48 + 100 * 22.95 + 100 * 27.14 + 100 * 32.03 + (unitsConsumed - 400) * 35.24;
+                } else if (unitsConsumed <= 600) {
+                    billAmount = 100 * 16.48 + 100 * 22.95 + 100 * 27.14 + 100 * 32.03 + 100 * 35.24 + (unitsConsumed - 500) * 36.66;
+                } else if (unitsConsumed <= 700) {
+                    billAmount = 100 * 16.48 + 100 * 22.95 + 100 * 27.14 + 100 * 32.03 + 100 * 35.24 + 100 * 36.66 + (unitsConsumed - 600) * 37.8;
+                } else {
+                    billAmount = 100 * 16.48 + 100 * 22.95 + 100 * 27.14 + 100 * 32.03 + 100 * 35.24 + 100 * 36.66 + 100 * 37.8 + (unitsConsumed - 700) * 42.72;
+                }
+            } else if (billCategory === "unprotected_old") {
+                if (unitsConsumed <= 100) {
+                    billAmount = unitsConsumed * 13.48;
+                } else if (unitsConsumed <= 200) {
+                    billAmount = 100 * 13.48 + (unitsConsumed - 100) * 18.95;
+                } else if (unitsConsumed <= 300) {
+                    billAmount = 100 * 13.48 + 100 * 18.95 + (unitsConsumed - 200) * 22.14;
+                } else if (unitsConsumed <= 400) {
+                    billAmount = 100 * 13.48 + 100 * 18.95 + 100 * 22.14 + (unitsConsumed - 300) * 25.53;
+                } else if (unitsConsumed <= 500) {
+                    billAmount = 100 * 13.48 + 100 * 18.95 + 100 * 22.14 + 100 * 25.53 + (unitsConsumed - 400) * 27.74;
+                } else if (unitsConsumed <= 600) {
+                    billAmount = 100 * 13.48 + 100 * 18.95 + 100 * 22.14 + 100 * 25.53 + 100 * 27.74 + (unitsConsumed - 500) * 29.16;
+                } else if (unitsConsumed <= 700) {
+                    billAmount = 100 * 13.48 + 100 * 18.95 + 100 * 22.14 + 100 * 25.53 + 100 * 27.74 + 100 * 29.16 + (unitsConsumed - 600) * 30.3;
+                } else {
+                    billAmount = 100 * 13.48 + 100 * 18.95 + 100 * 22.14 + 100 * 25.53 + 100 * 27.74 + 100 * 29.16 + 100 * 30.3 + (unitsConsumed - 700) * 35.22;
+                }
+            }
+
+            document.getElementById('result').innerText = `Total Units: ${unitsConsumed} \nTotal Bill: ${billAmount.toFixed(2)} PKR`;
+        }
+    </script>
+    <h3>Electricity Bill is Exclusive of Taxes & Additional Charges</h3>
+
+</body>
+
+</html>
