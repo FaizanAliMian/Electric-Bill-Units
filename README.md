@@ -24,6 +24,8 @@ This simple web application allows users to calculate their electricity bill bas
 4. **Note**:
    - If your usage exceeds 200 units under the protected category, the app will alert you to switch to the unprotected category for accurate billing.
 
+ ## Contributing
+   Feel free to contribute to this project by opening issues or submitting pull requests.
 ## Hosting
 
 This project is hosted on [GitHub Pages](https://your-username.github.io/your-repository-name/) (replace with your actual GitHub Pages URL).
